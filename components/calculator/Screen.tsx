@@ -109,7 +109,7 @@ export function Screen({ power, outputs, shuttingDown = false }: ScreenProps) {
       />
       <div className="border-t border-dashed border-zinc-700/80 mx-4" />
       <p className="px-4 py-2 max-sm:text-[9px] text-sm leading-relaxed text-zinc-600 italic">
-        "We're not asking you to believe this we're asking you to let us prove
+        "We're not asking you to believe this, we're asking you to let us prove
         it using your own data."
       </p>
     </div>
