@@ -25,21 +25,21 @@ export function PowerButton({ power, onToggle }: PowerButtonProps) {
         // 3D press effect via active pseudo
         "active:scale-[0.92] active:translate-y-0.5",
         // Disabled during boot
-        isBooting && "pointer-events-none opacity-60",
+        isBooting && "pointer-events-none opacity-60 cursor-not-allowed",
         // Off state
         !isOn &&
           !isBooting && [
             "bg-zinc-700 dark:bg-zinc-800",
             "shadow-[0_4px_0_#3f3f46,0_6px_12px_rgba(0,0,0,0.5)]",
             "border border-zinc-600",
-            "text-zinc-400 hover:text-zinc-200",
+            "text-zinc-400 hover:text-zinc-200 cursor-pointer",
           ],
         // On state
         isOn && [
           "bg-[#67D55E]",
           "shadow-[0_4px_0_#4aad43,0_6px_16px_rgba(103,213,94,0.4)]",
           "border border-[#4aad43]",
-          "text-white",
+          "text-white cursor-pointer",
         ],
         // Booting state
         isBooting && [

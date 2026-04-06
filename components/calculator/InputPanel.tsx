@@ -8,13 +8,13 @@ interface InputPanelProps {
   values: InputValues;
   onChange: (field: keyof InputValues, raw: string) => void;
   disabled?: boolean;
+  spendLocked?: boolean;
 }
 
 interface InputFieldProps {
   label: string;
   value: string;
   placeholder: string;
-  integerOnly?: boolean;
   onChange: (raw: string) => void;
   disabled?: boolean;
 }
@@ -23,48 +23,37 @@ function InputField({
   label,
   value,
   placeholder,
-  integerOnly = false,
   onChange,
   disabled,
 }: InputFieldProps) {
   const displayValue = value === "" ? "" : formatInputDisplay(value);
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const raw = sanitizeNumeric(e.target.value);
-    onChange(raw);
-  }
-
-  function handlePaste(e: React.ClipboardEvent<HTMLInputElement>) {
-    e.preventDefault();
-    const pasted = e.clipboardData.getData("text");
-    const raw = sanitizeNumeric(pasted);
-    onChange(raw);
-  }
-
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-[10px] uppercase tracking-widest font-semibold text-zinc-500 dark:text-zinc-400">
+      <label className="text-[9px] uppercase tracking-widest font-bold text-zinc-300">
         {label}
       </label>
       <div className="relative">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-[#01B3F7] select-none">
+        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#01B3F7] select-none pointer-events-none">
           KES
         </span>
         <input
           type="text"
-          inputMode={integerOnly ? "numeric" : "decimal"}
+          inputMode="numeric"
           value={displayValue}
           placeholder={placeholder}
           disabled={disabled}
-          onChange={handleChange}
-          onPaste={handlePaste}
+          onChange={(e) => onChange(sanitizeNumeric(e.target.value))}
+          onPaste={(e) => {
+            e.preventDefault();
+            onChange(sanitizeNumeric(e.clipboardData.getData("text")));
+          }}
           className={cn(
-            "w-full pl-10 pr-3 py-2.5 rounded-lg text-sm font-mono font-semibold",
-            "bg-zinc-900 dark:bg-zinc-950 border border-zinc-700 dark:border-zinc-800",
-            "text-zinc-100 placeholder:text-zinc-600",
-            "focus:outline-none focus:ring-2 focus:ring-[#01B3F7]/50 focus:border-[#01B3F7]",
-            "transition-colors duration-150",
-            "disabled:opacity-40 disabled:cursor-not-allowed",
+            "w-full pl-8 pr-2 py-2 rounded-sm text-xs font-mono font-bold",
+            "bg-zinc-800 border border-zinc-600",
+            "text-white placeholder:text-zinc-600",
+            "focus:outline-none focus:ring-1 focus:ring-[#01B3F7] focus:border-[#01B3F7]",
+            "transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed",
           )}
         />
       </div>
@@ -72,33 +61,37 @@ function InputField({
   );
 }
 
-export function InputPanel({ values, onChange, disabled }: InputPanelProps) {
+export function InputPanel({
+  values,
+  onChange,
+  disabled,
+  spendLocked,
+}: InputPanelProps) {
   return (
     <div className="flex flex-col gap-3">
-      <h3 className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400">
+      <span className="text-[10px] uppercase tracking-widest font-bold text-zinc-200">
         Claim Data
-      </h3>
+      </span>
       <InputField
-        label="Annual Claims Spend"
+        label="Annual Spend"
         value={values.annualClaimsSpend}
-        placeholder="e.g. 50,000,000"
-        onChange={(raw) => onChange("annualClaimsSpend", raw)}
+        placeholder="50,000,000"
+        onChange={(r) => onChange("annualClaimsSpend", r)}
         disabled={disabled}
       />
       <InputField
-        label="Number of Claims / Year"
+        label="No. of Claims"
         value={values.numClaims}
-        placeholder="e.g. 12,000"
-        integerOnly
-        onChange={(raw) => onChange("numClaims", raw)}
-        disabled={disabled}
+        placeholder="12,000"
+        onChange={(r) => onChange("numClaims", r)}
+        disabled={disabled || spendLocked}
       />
       <InputField
-        label="Average Claim Size"
+        label="Avg Claim Size"
         value={values.avgClaimSize}
-        placeholder="e.g. 4,200"
-        onChange={(raw) => onChange("avgClaimSize", raw)}
-        disabled={disabled}
+        placeholder="4,200"
+        onChange={(r) => onChange("avgClaimSize", r)}
+        disabled={disabled || spendLocked}
       />
     </div>
   );

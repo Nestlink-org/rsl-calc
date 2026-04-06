@@ -41,23 +41,14 @@ function SliderRow({
         <Tooltip.Provider delayDuration={200}>
           <Tooltip.Root>
             <Tooltip.Trigger asChild>
-              <span
-                className={cn(
-                  "text-[10px] uppercase tracking-widest font-semibold cursor-help",
-                  "text-zinc-500 dark:text-zinc-400 underline decoration-dotted underline-offset-2",
-                )}
-              >
+              <span className="text-[9px] uppercase tracking-widest font-bold text-zinc-300 cursor-help underline decoration-dotted underline-offset-2 select-none">
                 {label}
               </span>
             </Tooltip.Trigger>
             <Tooltip.Portal>
               <Tooltip.Content
                 side="top"
-                className={cn(
-                  "max-w-[200px] rounded-lg px-3 py-2 text-xs leading-relaxed",
-                  "bg-zinc-800 text-zinc-100 shadow-xl border border-zinc-700",
-                  "animate-in fade-in-0 zoom-in-95",
-                )}
+                className="max-w-[180px] rounded-lg px-2.5 py-1.5 text-[10px] leading-relaxed bg-zinc-800 text-zinc-100 shadow-xl border border-zinc-600 z-50"
               >
                 {tooltip}
                 <Tooltip.Arrow className="fill-zinc-800" />
@@ -65,11 +56,10 @@ function SliderRow({
             </Tooltip.Portal>
           </Tooltip.Root>
         </Tooltip.Provider>
-        <span className="text-xs font-bold tabular-nums" style={{ color }}>
+        <span className="text-[11px] font-bold tabular-nums" style={{ color }}>
           {formatSliderPercent(value)}
         </span>
       </div>
-
       <RadixSlider.Root
         min={min}
         max={max}
@@ -79,7 +69,7 @@ function SliderRow({
         onValueChange={([v]) => onChange(v)}
         className="relative flex items-center select-none touch-none w-full h-5"
       >
-        <RadixSlider.Track className="bg-zinc-700 dark:bg-zinc-800 relative grow rounded-full h-1.5">
+        <RadixSlider.Track className="bg-zinc-700 relative grow rounded-full h-1.5">
           <RadixSlider.Range
             className="absolute rounded-full h-full"
             style={{ backgroundColor: color }}
@@ -87,10 +77,8 @@ function SliderRow({
         </RadixSlider.Track>
         <RadixSlider.Thumb
           className={cn(
-            "block w-4 h-4 rounded-full shadow-md",
-            "border-2 bg-white",
-            "focus:outline-none focus:ring-2 focus:ring-offset-1",
-            "transition-transform hover:scale-110 active:scale-95",
+            "block w-3.5 h-3.5 rounded-full bg-white border-2 shadow-md",
+            "focus:outline-none hover:scale-110 active:scale-95 transition-transform",
             "disabled:pointer-events-none disabled:opacity-50",
           )}
           style={{ borderColor: color }}
@@ -103,13 +91,13 @@ function SliderRow({
 
 export function SliderPanel({ values, onChange, disabled }: SliderPanelProps) {
   return (
-    <div className="flex flex-col gap-4">
-      <h3 className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 dark:text-zinc-400">
+    <div className="flex flex-col gap-3">
+      <span className="text-[10px] uppercase tracking-widest font-bold text-zinc-200">
         Assumptions
-      </h3>
+      </span>
       <SliderRow
         label="Leakage Rate"
-        tooltip="The estimated percentage of total claims spend lost to fraud, errors, or leakage."
+        tooltip="% of total claims spend estimated to be lost to fraud or leakage."
         value={values.leakageRate}
         min={0.15}
         max={0.25}
@@ -120,7 +108,7 @@ export function SliderPanel({ values, onChange, disabled }: SliderPanelProps) {
       />
       <SliderRow
         label="Detection Rate"
-        tooltip="The percentage of leakage that ResultShield can detect and flag for recovery."
+        tooltip="% of leakage that ResultShield can detect and flag for recovery."
         value={values.detectionRate}
         min={0.4}
         max={0.6}
@@ -131,7 +119,7 @@ export function SliderPanel({ values, onChange, disabled }: SliderPanelProps) {
       />
       <SliderRow
         label="Savings Share"
-        tooltip="The percentage of recovered savings attributed to ResultShield's intervention."
+        tooltip="% of recovered savings directly attributed to ResultShield."
         value={values.savingsShare}
         min={0.1}
         max={0.3}
