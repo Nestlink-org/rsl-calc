@@ -35,7 +35,7 @@ function InputField({
       </label>
       <div className="relative">
         <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#01B3F7] select-none pointer-events-none">
-          KES
+          ${label !== "Avg Claim Amt" ? "KES":"NO."}
         </span>
         <input
           type="text"
@@ -87,7 +87,7 @@ export function InputPanel({
         disabled={disabled || spendLocked}
       />
       <InputField
-        label="Avg Claim Size"
+        label="Avg Claim Amt"
         value={values.avgClaimSize}
         placeholder="4,200"
         onChange={(r) => onChange("avgClaimSize", r)}
