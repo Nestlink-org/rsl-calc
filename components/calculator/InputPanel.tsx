@@ -35,7 +35,7 @@ function InputField({
       </label>
       <div className="relative">
         <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#01B3F7] select-none pointer-events-none">
-          ${label !== "Avg Claim Amt" ? "KES":"NO."}
+          {label !== "No. of Claims" ? "KES":"NO."}
         </span>
         <input
           type="text"
